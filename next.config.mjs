@@ -21,17 +21,7 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: false,
   
-  // API routes configuration
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: process.env.NEXT_PUBLIC_API_URL 
-          ? `${process.env.NEXT_PUBLIC_API_URL}/api/:path*` 
-          : '/api/:path*',
-      },
-    ]
-  },
+
 }
 
 export default nextConfig
