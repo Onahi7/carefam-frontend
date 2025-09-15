@@ -1,0 +1,1 @@
+// Intentionally left minimal; avoid declaring modules that already exist to prevent shadowing real exports.

@@ -1,0 +1,332 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Enhanced color tokens for professional pharmacy design */
+  --background: #ffffff;
+  --foreground: #1e293b;
+  --card: #f8fafc;
+  --card-foreground: #1e293b;
+  --popover: #ffffff;
+  --popover-foreground: #1e293b;
+  --primary: #0f766e;
+  --primary-foreground: #ffffff;
+  --secondary: #dc2626;
+  --secondary-foreground: #ffffff;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #0f766e;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #ffffff;
+  --ring: #0f766e;
+  --chart-1: #0f766e;
+  --chart-2: #14b8a6;
+  --chart-3: #06b6d4;
+  --chart-4: #3b82f6;
+  --chart-5: #8b5cf6;
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1e293b;
+  --sidebar-primary: #f0fdfa;
+  --sidebar-primary-foreground: #0f766e;
+  --sidebar-accent: #0f766e;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #0f766e;
+
+  /* Added custom pharmacy-specific design tokens */
+  --success: #059669;
+  --success-foreground: #ffffff;
+  --warning: #d97706;
+  --warning-foreground: #ffffff;
+  --info: #0284c7;
+  --info-foreground: #ffffff;
+  --surface: #f8fafc;
+  --surface-foreground: #475569;
+}
+
+.dark {
+  /* Enhanced dark mode with better contrast and readability */
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card: #1e293b;
+  --card-foreground: #f1f5f9;
+  --popover: #1e293b;
+  --popover-foreground: #f1f5f9;
+  --primary: #14b8a6;
+  --primary-foreground: #0f172a;
+  --secondary: #ef4444;
+  --secondary-foreground: #ffffff;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  --accent: #14b8a6;
+  --accent-foreground: #0f172a;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #334155;
+  --input: #1e293b;
+  --ring: #14b8a6;
+  --chart-1: #14b8a6;
+  --chart-2: #06b6d4;
+  --chart-3: #3b82f6;
+  --chart-4: #8b5cf6;
+  --chart-5: #ec4899;
+  --sidebar: #1e293b;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-primary: #0f766e;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #14b8a6;
+  --sidebar-accent-foreground: #0f172a;
+  --sidebar-border: #334155;
+  --sidebar-ring: #14b8a6;
+
+  /* Dark mode pharmacy-specific tokens */
+  --success: #10b981;
+  --success-foreground: #0f172a;
+  --warning: #f59e0b;
+  --warning-foreground: #0f172a;
+  --info: #0ea5e9;
+  --info-foreground: #0f172a;
+  --surface: #1e293b;
+  --surface-foreground: #cbd5e1;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Added custom pharmacy color utilities */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    /* Enhanced typography with better line height and letter spacing */
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+  }
+
+  /* Added smooth scrolling and focus improvements */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Enhanced focus styles for accessibility */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+
+  /* Improved selection colors */
+  ::selection {
+    @apply bg-primary/20 text-primary-foreground;
+  }
+}
+
+/* Added custom utility classes for pharmacy-specific styling */
+@layer utilities {
+  .text-success {
+    color: var(--success);
+  }
+
+  .text-success-foreground {
+    color: var(--success-foreground);
+  }
+
+  .bg-success {
+    background-color: var(--success);
+  }
+
+  .bg-success-foreground {
+    background-color: var(--success-foreground);
+  }
+
+  .border-success {
+    border-color: var(--success);
+  }
+
+  .text-warning {
+    color: var(--warning);
+  }
+
+  .text-warning-foreground {
+    color: var(--warning-foreground);
+  }
+
+  .bg-warning {
+    background-color: var(--warning);
+  }
+
+  .bg-warning-foreground {
+    background-color: var(--warning-foreground);
+  }
+
+  .border-warning {
+    border-color: var(--warning);
+  }
+
+  .text-info {
+    color: var(--info);
+  }
+
+  .text-info-foreground {
+    color: var(--info-foreground);
+  }
+
+  .bg-info {
+    background-color: var(--info);
+  }
+
+  .bg-info-foreground {
+    background-color: var(--info-foreground);
+  }
+
+  .border-info {
+    border-color: var(--info);
+  }
+
+  .bg-surface {
+    background-color: var(--surface);
+  }
+
+  .text-surface-foreground {
+    color: var(--surface-foreground);
+  }
+
+  /* Added glass morphism effect for modern UI */
+  .glass {
+    @apply backdrop-blur-sm bg-white/80 border border-white/20;
+  }
+
+  .glass-dark {
+    @apply backdrop-blur-sm bg-slate-900/80 border border-slate-700/20;
+  }
+
+  /* Enhanced shadow utilities */
+  .shadow-soft {
+    box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.1), 0 4px 16px -4px rgba(0, 0, 0, 0.1);
+  }
+
+  .shadow-glow {
+    box-shadow: 0 0 20px -5px var(--primary);
+  }
+
+  /* Improved animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+}
+
+/* Added custom keyframe animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Enhanced print styles for receipts and reports */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  body {
+    @apply text-black bg-white;
+  }
+
+  .print-break {
+    page-break-after: always;
+  }
+
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+}
