@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss"
 
+// Single theme configuration (dark mode removed per request)
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
