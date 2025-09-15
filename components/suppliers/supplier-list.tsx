@@ -18,10 +18,13 @@ export function SupplierList() {
     const loadSuppliers = async () => {
       try {
         const data = await SupplierService.getSuppliers()
-        setSuppliers(data)
-        setFilteredSuppliers(data)
+        const supplierData = Array.isArray(data) ? data : []
+        setSuppliers(supplierData)
+        setFilteredSuppliers(supplierData)
       } catch (error) {
         console.error("Failed to load suppliers:", error)
+        setSuppliers([])
+        setFilteredSuppliers([])
       } finally {
         setLoading(false)
       }
@@ -83,8 +86,9 @@ export function SupplierList() {
         </div>
 
         <div className="space-y-4">
-          {filteredSuppliers.map((supplier) => (
-            <div key={supplier.id} className="border rounded-lg p-4 hover:bg-muted/50 transition-colors">
+          {filteredSuppliers && Array.isArray(filteredSuppliers) && filteredSuppliers.length > 0 ? (
+            filteredSuppliers.map((supplier) => (
+              <div key={supplier.id} className="border rounded-lg p-4 hover:bg-muted/50 transition-colors">
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h3 className="font-semibold text-foreground text-lg">{supplier.name}</h3>
@@ -137,13 +141,20 @@ export function SupplierList() {
                 </div>
               </div>
             </div>
-          ))}
+          ))
+          ) : (
+            <div className="text-center py-8">
+              <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground">
+                {loading ? "Loading suppliers..." : "No suppliers found matching your search."}
+              </p>
+            </div>
+          )}
         </div>
 
-        {filteredSuppliers.length === 0 && (
-          <div className="text-center py-8">
-            <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No suppliers found matching your search.</p>
+        {!loading && filteredSuppliers.length === 0 && (
+          <div className="text-center py-4">
+            <p className="text-sm text-muted-foreground">Try adjusting your search criteria</p>
           </div>
         )}
       </CardContent>

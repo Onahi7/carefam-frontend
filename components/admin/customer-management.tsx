@@ -110,10 +110,12 @@ export function CustomerManagement() {
       }
 
       const data = await response.json()
-      setCustomers(data.customers)
-      setTotal(data.total)
+      setCustomers(Array.isArray(data.customers) ? data.customers : [])
+      setTotal(data.total || 0)
     } catch (error) {
       console.error("Error fetching customers:", error)
+      setCustomers([])
+      setTotal(0)
     } finally {
       setLoading(false)
     }
@@ -287,19 +289,20 @@ export function CustomerManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {customers.map((customer) => (
-                <TableRow key={customer._id}>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <div className="font-medium">{customer.name}</div>
-                      {customer.businessName && (
-                        <div className="text-sm text-muted-foreground flex items-center gap-1">
-                          <Building className="h-3 w-3" />
-                          {customer.businessName}
-                        </div>
-                      )}
-                    </div>
-                  </TableCell>
+              {customers && Array.isArray(customers) && customers.length > 0 ? (
+                customers.map((customer) => (
+                  <TableRow key={customer._id}>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="font-medium">{customer.name}</div>
+                        {customer.businessName && (
+                          <div className="text-sm text-muted-foreground flex items-center gap-1">
+                            <Building className="h-3 w-3" />
+                            {customer.businessName}
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
                   <TableCell>
                     <Badge className={getCustomerTypeColor(customer.customerType)}>
                       {formatCustomerType(customer.customerType)}
@@ -383,17 +386,23 @@ export function CustomerManagement() {
                     </Button>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-8">
+                    <User className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <h3 className="mt-2 text-sm font-semibold">No customers found</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {loading ? "Loading customers..." : "Get started by adding your first customer."}
+                    </p>
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
 
-          {customers.length === 0 && (
+          {!loading && customers.length === 0 && (
             <div className="text-center py-8">
-              <User className="mx-auto h-12 w-12 text-muted-foreground" />
-              <h3 className="mt-2 text-sm font-semibold">No customers found</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Get started by adding your first customer.
-              </p>
               <Button onClick={handleCreateCustomer} className="mt-4">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Customer
