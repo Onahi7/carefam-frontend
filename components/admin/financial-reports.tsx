@@ -99,7 +99,7 @@ export function FinancialReports() {
                 <Percent className="h-4 w-4 text-purple-600" />
                 <span className="text-sm font-medium text-muted-foreground">Margin</span>
               </div>
-              <p className="text-2xl font-bold text-purple-600">{report.profitMargin.toFixed(1)}%</p>
+              <p className="text-2xl font-bold text-purple-600">{(report.profitMargin || 0).toFixed(1)}%</p>
             </div>
           </div>
         </CardContent>

@@ -265,7 +265,7 @@ export default function ReportsPage() {
                     {category.lowStockItems}
                   </Badge>
                 </TableCell>
-                <TableCell>{category.turnoverRate.toFixed(1)}x</TableCell>
+                <TableCell>{(category.turnoverRate || 0).toFixed(1)}x</TableCell>
               </TableRow>
             ))}
           </TableBody>

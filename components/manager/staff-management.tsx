@@ -282,7 +282,7 @@ export function StaffManagement() {
                       <Avatar>
                         <AvatarImage src={member.avatar} />
                         <AvatarFallback>
-                          {member.name.split(' ').map(n => n[0]).join('')}
+                          {(((member.name || '') || '') || '').split(' ').map(n => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>
                       <div 

@@ -148,7 +148,7 @@ export function ShiftTest() {
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4" />
-                  <span>Started: {new Date(currentShift.startTime).toLocaleString()}</span>
+                  <span>Started: {currentShift.startTime ? new Date(currentShift.startTime).toLocaleString() : 'N/A'}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <DollarSign className="h-4 w-4" />

@@ -238,9 +238,9 @@ export default function ManagerStaffPage() {
 
     if (searchTerm) {
       filtered = filtered.filter(member =>
-        member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        member.phone.includes(searchTerm)
+        (member.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (member.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (member.phone || '').includes(searchTerm)
       )
     }
 
@@ -424,7 +424,7 @@ export default function ManagerStaffPage() {
                         <Avatar>
                           <AvatarImage src={member.avatar} />
                           <AvatarFallback>
-                            {member.name.split(' ').map(n => n[0]).join('')}
+                            {(member.name || '').split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
                         <div>
@@ -502,7 +502,7 @@ export default function ManagerStaffPage() {
                       <Avatar className="h-8 w-8">
                         <AvatarImage src={member.avatar} />
                         <AvatarFallback className="text-xs">
-                          {member.name.split(' ').map(n => n[0]).join('')}
+                          {(member.name || '').split(' ').map(n => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>
                       <div>

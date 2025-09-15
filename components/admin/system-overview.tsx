@@ -47,37 +47,37 @@ export function SystemOverview() {
   const cards = [
     {
       title: "Total Outlets",
-      value: metrics.totalOutlets.toString(),
+      value: (metrics.totalOutlets || 0).toString(),
       icon: Building2,
       description: "Active pharmacy locations",
     },
     {
       title: "Total Revenue",
-      value: AdminService.formatCurrency(metrics.totalRevenue),
+      value: AdminService.formatCurrency(metrics.totalRevenue || 0),
       icon: DollarSign,
       description: "Monthly revenue across all outlets",
     },
     {
       title: "Transactions",
-      value: metrics.totalTransactions.toLocaleString(),
+      value: (metrics.totalTransactions || 0).toLocaleString(),
       icon: ShoppingCart,
       description: "Total transactions this month",
     },
     {
       title: "Products",
-      value: metrics.totalProducts.toLocaleString(),
+      value: (metrics.totalProducts || 0).toLocaleString(),
       icon: Package,
       description: "Total products in inventory",
     },
     {
       title: "System Users",
-      value: metrics.totalUsers.toString(),
+      value: (metrics.totalUsers || 0).toString(),
       icon: Users,
       description: "Active staff across all outlets",
     },
     {
       title: "Avg Transaction",
-      value: AdminService.formatCurrency(metrics.averageTransactionValue),
+      value: AdminService.formatCurrency(metrics.averageTransactionValue || 0),
       icon: TrendingUp,
       description: "Average transaction value",
     },

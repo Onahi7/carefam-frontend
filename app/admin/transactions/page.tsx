@@ -513,7 +513,7 @@ export default function TransactionsPage() {
                 </div>
                 <div className="flex justify-between">
                   <span>Date:</span>
-                  <span>{selectedTransaction.createdAt.toLocaleString()}</span>
+                  <span>{selectedTransaction.createdAt ? new Date(selectedTransaction.createdAt).toLocaleString() : 'N/A'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Payment Method:</span>
