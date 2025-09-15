@@ -111,18 +111,24 @@ export function FinancialReports() {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {report.topSellingProducts.map((product, index) => (
-              <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                <div>
-                  <p className="font-medium text-foreground">{product.name}</p>
-                  <p className="text-sm text-muted-foreground">{product.quantity} units sold</p>
+            {(report.topSellingProducts && Array.isArray(report.topSellingProducts) && report.topSellingProducts.length > 0) ? (
+              report.topSellingProducts.map((product, index) => (
+                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <p className="font-medium text-foreground">{product.name}</p>
+                    <p className="text-sm text-muted-foreground">{product.quantity} units sold</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-foreground">{AdminService.formatCurrency(product.revenue)}</p>
+                    <p className="text-sm text-muted-foreground">#{index + 1} bestseller</p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-semibold text-foreground">{AdminService.formatCurrency(product.revenue)}</p>
-                  <p className="text-sm text-muted-foreground">#{index + 1} bestseller</p>
-                </div>
+              ))
+            ) : (
+              <div className="text-center py-6 text-muted-foreground">
+                <p>No product data available for this period</p>
               </div>
-            ))}
+            )}
           </div>
         </CardContent>
       </Card>

@@ -53,10 +53,13 @@ interface TransactionStats {
   totalTransactions: number
   totalRevenue: number
   averageTransaction: number
-  bulkSalesCount: number
-  cashTransactions: number
-  cardTransactions: number
-  mobileTransactions: number
+  todayTransactions: number
+  pendingTransactions: number
+  completedTransactions: number
+  bulkSalesCount?: number
+  cashTransactions?: number
+  cardTransactions?: number
+  mobileTransactions?: number
 }
 
 interface BulkSaleData {
@@ -76,6 +79,9 @@ export default function TransactionsPage() {
     totalTransactions: 0,
     totalRevenue: 0,
     averageTransaction: 0,
+    todayTransactions: 0,
+    pendingTransactions: 0,
+    completedTransactions: 0,
     bulkSalesCount: 0,
     cashTransactions: 0,
     cardTransactions: 0,
@@ -109,83 +115,20 @@ export default function TransactionsPage() {
       calculateStats()
     } catch (error) {
       console.error("Failed to load transaction data:", error)
-      // Load mock data
-      loadMockData()
+      // Set empty arrays if API fails
+      setTransactions([])
+      setBulkSales([])
+      setStats({
+        totalTransactions: 0,
+        totalRevenue: 0,
+        averageTransaction: 0,
+        todayTransactions: 0,
+        pendingTransactions: 0,
+        completedTransactions: 0
+      })
     } finally {
       setIsLoading(false)
     }
-  }
-
-  const loadMockData = () => {
-    const mockTransactions: Transaction[] = [
-      {
-        id: "TXN001",
-        outletId: "1",
-        staffId: "1",
-        items: [
-          { productId: "1", quantity: 2, unitPrice: 2500, discount: 0, total: 5000 }
-        ],
-        subtotal: 5000,
-        tax: 0,
-        discount: 0,
-        total: 5000,
-        paymentMethod: "cash",
-        status: "completed",
-        isBulkSale: false,
-        createdAt: new Date("2025-01-10")
-      },
-      {
-        id: "TXN002",
-        outletId: "1",
-        staffId: "2",
-        items: [
-          { productId: "2", quantity: 1, unitPrice: 12000, discount: 1200, total: 10800 }
-        ],
-        subtotal: 12000,
-        tax: 0,
-        discount: 1200,
-        total: 10800,
-        paymentMethod: "card",
-        status: "completed",
-        isBulkSale: true,
-        createdAt: new Date("2025-01-09")
-      }
-    ]
-
-    const mockBulkSales: BulkSaleData[] = [
-      {
-        id: "BULK001",
-        customerName: "Hospital ABC",
-        totalAmount: 150000,
-        itemCount: 25,
-        discountPercentage: 15,
-        createdAt: new Date("2025-01-08"),
-        status: "completed"
-      },
-      {
-        id: "BULK002",
-        customerName: "Clinic XYZ",
-        totalAmount: 89000,
-        itemCount: 18,
-        discountPercentage: 10,
-        createdAt: new Date("2025-01-07"),
-        status: "pending"
-      }
-    ]
-
-    setTransactions(mockTransactions)
-    setBulkSales(mockBulkSales)
-    
-    // Mock stats
-    setStats({
-      totalTransactions: 124,
-      totalRevenue: 387500,
-      averageTransaction: 3125,
-      bulkSalesCount: 8,
-      cashTransactions: 78,
-      cardTransactions: 32,
-      mobileTransactions: 14
-    })
   }
 
   const calculateStats = () => {
@@ -193,6 +136,17 @@ export default function TransactionsPage() {
     const revenue = transactions.reduce((sum, t) => sum + t.total, 0)
     const avgTransaction = transactions.length > 0 ? revenue / transactions.length : 0
     const bulkCount = transactions.filter(t => t.isBulkSale).length
+    
+    // Calculate today's transactions
+    const today = new Date()
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    const todayTransactions = transactions.filter(t => 
+      new Date(t.createdAt) >= todayStart
+    ).length
+    
+    // Calculate status counts
+    const pendingCount = transactions.filter(t => t.status === 'pending').length
+    const completedCount = transactions.filter(t => t.status === 'completed').length
     
     const paymentMethods = transactions.reduce((acc, t) => {
       acc[t.paymentMethod] = (acc[t.paymentMethod] || 0) + 1
@@ -203,6 +157,9 @@ export default function TransactionsPage() {
       totalTransactions: transactions.length,
       totalRevenue: revenue,
       averageTransaction: avgTransaction,
+      todayTransactions,
+      pendingTransactions: pendingCount,
+      completedTransactions: completedCount,
       bulkSalesCount: bulkCount,
       cashTransactions: paymentMethods.cash || 0,
       cardTransactions: paymentMethods.card || 0,

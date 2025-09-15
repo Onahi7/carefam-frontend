@@ -35,6 +35,7 @@ import {
 } from "lucide-react"
 import { ProtectedRoute } from "@/components/auth/protected-route"
 import { AuthService } from "@/lib/auth"
+import { AdminService } from "@/lib/admin-service"
 import { formatCurrency } from "@/lib/utils"
 import type { User as UserType } from "@/lib/types"
 
@@ -73,20 +74,22 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
 
   const loadSystemStats = async () => {
     try {
-      // TODO: Replace with real API call
-      // const response = await fetch('/api/admin/system-stats')
-      // const stats = await response.json()
-      
-      // Mock stats for now
-      const stats = {
+      const stats = await AdminService.getSystemMetrics()
+      setSystemStats({
+        totalRevenue: stats.totalRevenue,
+        totalTransactions: stats.totalTransactions,
+        activeOutlets: stats.totalOutlets,
+        totalUsers: stats.totalUsers
+      })
+    } catch (error) {
+      console.error("Failed to load system stats:", error)
+      // Fallback to zero values if API fails
+      setSystemStats({
         totalRevenue: 0,
         totalTransactions: 0,
         activeOutlets: 0,
         totalUsers: 0
-      }
-      setSystemStats(stats)
-    } catch (error) {
-      console.error("Failed to load system stats:", error)
+      })
     }
   }
 

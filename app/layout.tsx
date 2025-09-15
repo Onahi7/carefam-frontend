@@ -4,6 +4,8 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/react"
 import { Suspense } from "react"
+import { ThemeProvider } from "@/components/theme-provider"
+import { ToastProvider } from "@/components/toast-provider"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -18,9 +20,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        <Suspense fallback={null}>{children}</Suspense>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ToastProvider>
+            <Suspense fallback={null}>{children}</Suspense>
+          </ToastProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

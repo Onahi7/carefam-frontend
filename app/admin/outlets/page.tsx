@@ -67,12 +67,11 @@ export default function OutletsPage() {
     managerId: ""
   })
 
-  // Mock managers list - replace with real API call
-  const managers = [
+  const [managers, setManagers] = useState([
     { id: "1", name: "John Smith", email: "john@pharmacy.com" },
     { id: "2", name: "Sarah Johnson", email: "sarah@pharmacy.com" },
     { id: "3", name: "Mike Wilson", email: "mike@pharmacy.com" }
-  ]
+  ])
 
   useEffect(() => {
     loadOutlets()
@@ -80,35 +79,12 @@ export default function OutletsPage() {
 
   const loadOutlets = async () => {
     try {
-      // Real API call
       const outletsData = await AdminService.getOutlets()
       setOutlets(outletsData)
     } catch (error) {
       console.error("Failed to load outlets:", error)
-      // Fallback to mock data for demo
-      const mockOutlets: Outlet[] = [
-        {
-          id: "1",
-          name: "Main Pharmacy",
-          address: "123 Downtown Street, Freetown",
-          phone: "+232 22 123 456",
-          managerId: "1",
-          isActive: true,
-          createdAt: new Date("2024-01-15"),
-          updatedAt: new Date("2024-01-15")
-        },
-        {
-          id: "2", 
-          name: "East Branch",
-          address: "456 East Road, Freetown",
-          phone: "+232 22 789 012",
-          managerId: "2",
-          isActive: true,
-          createdAt: new Date("2024-02-10"),
-          updatedAt: new Date("2024-02-10")
-        }
-      ]
-      setOutlets(mockOutlets)
+      // Set empty array if API fails
+      setOutlets([])
     }
   }
 
@@ -169,12 +145,12 @@ export default function OutletsPage() {
     return managers.find(m => m.id === managerId)?.name || "Unassigned"
   }
 
-  // Mock stats for outlets - replace with real API data
+  // TODO: Replace with real API data from outlet metrics
   const getOutletStats = (outletId: string) => ({
-    dailySales: Math.floor(Math.random() * 5000),
-    staffCount: Math.floor(Math.random() * 15) + 5,
-    productCount: Math.floor(Math.random() * 500) + 100,
-    monthlyRevenue: Math.floor(Math.random() * 50000) + 10000
+    dailySales: 2500,
+    staffCount: 8,
+    productCount: 350,
+    monthlyRevenue: 25000
   })
 
   const OutletForm = () => (

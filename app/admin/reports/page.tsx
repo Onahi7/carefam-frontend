@@ -105,58 +105,13 @@ export default function ReportsPage() {
       }
     } catch (error) {
       console.error("Failed to load reports:", error)
-      // Load mock data for demo
-      loadMockData()
+      // Reset to empty states if API fails
+      setSalesReport(null)
+      setStaffPerformance([])
+      setInventoryReport([])
+      setFinancialReport(null)
     } finally {
       setIsLoading(false)
-    }
-  }
-
-  const loadMockData = () => {
-    switch (selectedReportType) {
-      case "sales":
-        setSalesReport({
-          period: selectedPeriod,
-          totalSales: 125000,
-          totalTransactions: 450,
-          averageTransactionValue: 2778,
-          topProducts: [
-            { name: "Paracetamol 500mg", quantity: 150, revenue: 15000 },
-            { name: "Vitamin C", quantity: 120, revenue: 12000 },
-            { name: "Antibiotics", quantity: 80, revenue: 20000 }
-          ]
-        })
-        break
-        
-      case "staff":
-        setStaffPerformance([
-          { staffId: "1", name: "John Doe", totalSales: 45000, transactionCount: 120, averageTransaction: 375, efficiency: 85 },
-          { staffId: "2", name: "Jane Smith", totalSales: 38000, transactionCount: 95, averageTransaction: 400, efficiency: 92 },
-          { staffId: "3", name: "Mike Johnson", totalSales: 42000, transactionCount: 110, averageTransaction: 382, efficiency: 78 }
-        ])
-        break
-        
-      case "inventory":
-        setInventoryReport([
-          { category: "Pain Relief", totalProducts: 45, totalValue: 67500, lowStockItems: 3, turnoverRate: 2.5 },
-          { category: "Vitamins", totalProducts: 32, totalValue: 48000, lowStockItems: 1, turnoverRate: 1.8 },
-          { category: "Antibiotics", totalProducts: 28, totalValue: 84000, lowStockItems: 5, turnoverRate: 3.2 }
-        ])
-        break
-        
-      case "financial":
-        setFinancialReport({
-          period: selectedPeriod,
-          revenue: 125000,
-          expenses: 78000,
-          profit: 47000,
-          profitMargin: 37.6,
-          topSellingProducts: [
-            { name: "Paracetamol", quantity: 150, revenue: 15000 },
-            { name: "Antibiotics", quantity: 80, revenue: 20000 }
-          ]
-        })
-        break
     }
   }
 
