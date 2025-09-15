@@ -65,7 +65,14 @@ export default function UsersPage() {
         AdminService.getOutlets()
       ])
       setUsers(Array.isArray(usersData) ? usersData : [])
-      setOutlets(Array.isArray(outletsData) ? outletsData : [])
+      // Map Outlet[] to UserOutlet[] to match the expected interface
+      const mappedOutlets = Array.isArray(outletsData) ? outletsData.map(outlet => ({
+        _id: outlet.id,
+        name: outlet.name,
+        address: outlet.address,
+        city: undefined // Outlet interface doesn't have city, but UserOutlet expects it as optional
+      })) : []
+      setOutlets(mappedOutlets)
     } catch (error) {
       console.error('Error loading data:', error)
       setUsers([])

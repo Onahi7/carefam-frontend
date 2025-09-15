@@ -24,7 +24,7 @@ export function BulkSalesManagement() {
     const loadBulkSales = async () => {
       try {
         const data = await AdminService.getBulkSalesData()
-        setBulkSales(data)
+        setBulkSales(Array.isArray(data) ? data as BulkSale[] : [])
       } catch (error) {
         console.error("Failed to load bulk sales:", error)
       } finally {
