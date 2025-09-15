@@ -105,10 +105,10 @@ export default function TransactionsPage() {
     try {
       if (viewMode === "bulk") {
         const bulkData = await AdminService.getBulkSalesData()
-        setBulkSales(bulkData as BulkSaleData[])
+        setBulkSales(Array.isArray(bulkData) ? bulkData as BulkSaleData[] : [])
       } else {
         const transactionData = await ApiClient.get<Transaction[]>(`${API_ENDPOINTS.TRANSACTIONS}?period=${selectedPeriod}`)
-        setTransactions(transactionData)
+        setTransactions(Array.isArray(transactionData) ? transactionData : [])
       }
 
       // Calculate stats

@@ -80,7 +80,7 @@ export default function OutletsPage() {
   const loadOutlets = async () => {
     try {
       const outletsData = await AdminService.getOutlets()
-      setOutlets(outletsData)
+      setOutlets(Array.isArray(outletsData) ? outletsData : [])
     } catch (error) {
       console.error("Failed to load outlets:", error)
       // Set empty array if API fails

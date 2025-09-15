@@ -408,23 +408,29 @@ export default function BulkSalesPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {stats.topCustomers.map((customer, index) => (
-              <div key={customer.name} className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                    <span className="text-sm font-medium">#{index + 1}</span>
+            {stats.topCustomers && Array.isArray(stats.topCustomers) && stats.topCustomers.length > 0 ? (
+              stats.topCustomers.map((customer, index) => (
+                <div key={customer.name} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <span className="text-sm font-medium">#{index + 1}</span>
+                    </div>
+                    <div>
+                      <p className="font-medium">{customer.name}</p>
+                      <p className="text-sm text-muted-foreground">{customer.orders} orders</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium">{customer.name}</p>
-                    <p className="text-sm text-muted-foreground">{customer.orders} orders</p>
+                  <div className="text-right">
+                    <p className="font-medium">{formatCurrency(customer.revenue)}</p>
+                    <p className="text-sm text-muted-foreground">total revenue</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-medium">{formatCurrency(customer.revenue)}</p>
-                  <p className="text-sm text-muted-foreground">total revenue</p>
-                </div>
+              ))
+            ) : (
+              <div className="text-center py-6 text-muted-foreground">
+                <p>No customer data available</p>
               </div>
-            ))}
+            )}
           </div>
         </CardContent>
       </Card>
@@ -601,15 +607,23 @@ export default function BulkSalesPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {selectedBulkSale.items.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">{item.productName}</TableCell>
-                        <TableCell>{item.quantity}</TableCell>
-                        <TableCell>{formatCurrency(item.unitPrice)}</TableCell>
-                        <TableCell>{formatCurrency(item.discount)}</TableCell>
-                        <TableCell>{formatCurrency(item.total)}</TableCell>
+                    {selectedBulkSale.items && Array.isArray(selectedBulkSale.items) ? (
+                      selectedBulkSale.items.map((item, index) => (
+                        <TableRow key={index}>
+                          <TableCell className="font-medium">{item.productName}</TableCell>
+                          <TableCell>{item.quantity}</TableCell>
+                          <TableCell>{formatCurrency(item.unitPrice)}</TableCell>
+                          <TableCell>{formatCurrency(item.discount)}</TableCell>
+                          <TableCell>{formatCurrency(item.total)}</TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">
+                          No items available
+                        </TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </div>

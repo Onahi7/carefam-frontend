@@ -79,35 +79,41 @@ export function BulkSalesManagement() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {bulkSales.map((sale) => (
-            <div key={sale.id} className="border rounded-lg p-4 hover:bg-muted/50 transition-colors">
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <h3 className="font-semibold text-foreground">{sale.customer}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {sale.items} items • {new Date(sale.date).toLocaleDateString()}
-                  </p>
+          {bulkSales && Array.isArray(bulkSales) && bulkSales.length > 0 ? (
+            bulkSales.map((sale) => (
+              <div key={sale.id} className="border rounded-lg p-4 hover:bg-muted/50 transition-colors">
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h3 className="font-semibold text-foreground">{sale.customer}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {sale.items} items • {new Date(sale.date).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <Badge variant={getStatusColor(sale.status)}>{sale.status}</Badge>
                 </div>
-                <Badge variant={getStatusColor(sale.status)}>{sale.status}</Badge>
-              </div>
 
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-lg font-bold text-foreground">{AdminService.formatCurrency(sale.amount)}</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-                    <Eye className="h-3 w-3" />
-                    View
-                  </Button>
-                  <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-                    <FileText className="h-3 w-3" />
-                    Invoice
-                  </Button>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg font-bold text-foreground">{AdminService.formatCurrency(sale.amount)}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" className="gap-2 bg-transparent">
+                      <Eye className="h-3 w-3" />
+                      View
+                    </Button>
+                    <Button variant="outline" size="sm" className="gap-2 bg-transparent">
+                      <FileText className="h-3 w-3" />
+                      Invoice
+                    </Button>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="text-center py-6 text-muted-foreground">
+              <p>{loading ? "Loading bulk sales..." : "No bulk sales found"}</p>
             </div>
-          ))}
+          )}
         </div>
       </CardContent>
     </Card>

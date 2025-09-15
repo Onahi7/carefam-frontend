@@ -141,7 +141,7 @@ export function CustomerForm({ customer, onSave, onCancel }: CustomerFormProps) 
       })
       if (response.ok) {
         const data = await response.json()
-        setOutlets(data)
+        setOutlets(Array.isArray(data) ? data : [])
       }
     } catch (error) {
       console.error("Error fetching outlets:", error)

@@ -90,12 +90,12 @@ export default function ReportsPage() {
           
         case "staff":
           const staffData = await ApiClient.get<StaffPerformance[]>(`${API_ENDPOINTS.STAFF_PERFORMANCE}?period=${selectedPeriod}`)
-          setStaffPerformance(staffData)
+          setStaffPerformance(Array.isArray(staffData) ? staffData : [])
           break
           
         case "inventory":
           const inventoryData = await ApiClient.get<InventoryReport[]>(`${API_ENDPOINTS.INVENTORY_REPORTS}?period=${selectedPeriod}`)
-          setInventoryReport(inventoryData)
+          setInventoryReport(Array.isArray(inventoryData) ? inventoryData : [])
           break
           
         case "financial":
@@ -186,13 +186,21 @@ export default function ReportsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {salesReport?.topProducts.map((product, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-medium">{product.name}</TableCell>
-                  <TableCell>{product.quantity}</TableCell>
-                  <TableCell>{formatCurrency(product.revenue)}</TableCell>
+              {salesReport?.topProducts && Array.isArray(salesReport.topProducts) ? (
+                salesReport.topProducts.map((product, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="font-medium">{product.name}</TableCell>
+                    <TableCell>{product.quantity}</TableCell>
+                    <TableCell>{formatCurrency(product.revenue)}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center text-muted-foreground">
+                    No products data available
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </CardContent>
@@ -218,19 +226,27 @@ export default function ReportsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {staffPerformance.map((staff) => (
-              <TableRow key={staff.staffId}>
-                <TableCell className="font-medium">{staff.name}</TableCell>
-                <TableCell>{formatCurrency(staff.totalSales)}</TableCell>
-                <TableCell>{staff.transactionCount}</TableCell>
-                <TableCell>{formatCurrency(staff.averageTransaction)}</TableCell>
-                <TableCell>
-                  <Badge variant={staff.efficiency > 80 ? "default" : "secondary"}>
-                    {staff.efficiency}%
-                  </Badge>
+            {staffPerformance && Array.isArray(staffPerformance) && staffPerformance.length > 0 ? (
+              staffPerformance.map((staff) => (
+                <TableRow key={staff.staffId}>
+                  <TableCell className="font-medium">{staff.name}</TableCell>
+                  <TableCell>{formatCurrency(staff.totalSales)}</TableCell>
+                  <TableCell>{staff.transactionCount}</TableCell>
+                  <TableCell>{formatCurrency(staff.averageTransaction)}</TableCell>
+                  <TableCell>
+                    <Badge variant={staff.efficiency > 80 ? "default" : "secondary"}>
+                      {staff.efficiency}%
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center text-muted-foreground">
+                  No staff performance data available
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </CardContent>
@@ -255,19 +271,27 @@ export default function ReportsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {inventoryReport.map((category) => (
-              <TableRow key={category.category}>
-                <TableCell className="font-medium">{category.category}</TableCell>
-                <TableCell>{category.totalProducts}</TableCell>
-                <TableCell>{formatCurrency(category.totalValue)}</TableCell>
-                <TableCell>
-                  <Badge variant={category.lowStockItems > 0 ? "destructive" : "default"}>
-                    {category.lowStockItems}
-                  </Badge>
+            {inventoryReport && Array.isArray(inventoryReport) && inventoryReport.length > 0 ? (
+              inventoryReport.map((category) => (
+                <TableRow key={category.category}>
+                  <TableCell className="font-medium">{category.category}</TableCell>
+                  <TableCell>{category.totalProducts}</TableCell>
+                  <TableCell>{formatCurrency(category.totalValue)}</TableCell>
+                  <TableCell>
+                    <Badge variant={category.lowStockItems > 0 ? "destructive" : "default"}>
+                      {category.lowStockItems}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{(category.turnoverRate || 0).toFixed(1)}x</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center text-muted-foreground">
+                  No inventory data available
                 </TableCell>
-                <TableCell>{(category.turnoverRate || 0).toFixed(1)}x</TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </CardContent>

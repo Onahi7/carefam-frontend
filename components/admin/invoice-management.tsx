@@ -120,10 +120,12 @@ export function InvoiceManagement() {
       }
 
       const data = await response.json()
-      setInvoices(data.invoices)
-      setTotal(data.total)
+      setInvoices(Array.isArray(data.invoices) ? data.invoices : [])
+      setTotal(data.total || 0)
     } catch (error) {
       console.error("Error fetching invoices:", error)
+      setInvoices([])
+      setTotal(0)
     } finally {
       setLoading(false)
     }
@@ -357,13 +359,14 @@ export function InvoiceManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {invoices.map((invoice) => (
-                <TableRow key={invoice._id}>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <div className="font-medium">{invoice.invoiceNumber}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {invoice.outlet.name}
+              {invoices && Array.isArray(invoices) && invoices.length > 0 ? (
+                invoices.map((invoice) => (
+                  <TableRow key={invoice._id}>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="font-medium">{invoice.invoiceNumber}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {invoice.outlet.name}
                       </div>
                     </div>
                   </TableCell>
@@ -455,7 +458,14 @@ export function InvoiceManagement() {
                     </div>
                   </TableCell>
                 </TableRow>
-              ))}
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                    {loading ? "Loading invoices..." : "No invoices found"}
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
 

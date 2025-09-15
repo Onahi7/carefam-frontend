@@ -64,10 +64,12 @@ export default function UsersPage() {
         AdminService.getUsers(),
         AdminService.getOutlets()
       ])
-      setUsers(usersData as User[])
-      setOutlets(outletsData as any[])
+      setUsers(Array.isArray(usersData) ? usersData : [])
+      setOutlets(Array.isArray(outletsData) ? outletsData : [])
     } catch (error) {
       console.error('Error loading data:', error)
+      setUsers([])
+      setOutlets([])
       toast({
         title: "Error",
         description: "Failed to load users and outlets",
