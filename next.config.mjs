@@ -8,27 +8,30 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    domains: ['localhost'],
   },
-  output: 'standalone',
   experimental: {
-    // Reduce static generation timeout
-    staticGenerationTimeout: 10,
-    // Skip static generation for problematic pages
-    skipMiddlewareUrlNormalize: true,
+    // Optimize build performance
+    cpus: 2,
+    webpackBuildWorker: true,
   },
-  // Disable static optimization for API routes and admin pages
+  // Optimize for production deployment
+  output: 'standalone',
+  swcMinify: true,
+  poweredByHeader: false,
+  generateEtags: false,
+  
+  // API routes configuration
   async rewrites() {
     return [
       {
         source: '/api/:path*',
-        destination: '/api/:path*',
+        destination: process.env.NEXT_PUBLIC_API_URL 
+          ? `${process.env.NEXT_PUBLIC_API_URL}/api/:path*` 
+          : '/api/:path*',
       },
     ]
   },
-  // Configure which pages should be statically generated
-  async generateStaticParams() {
-    return []
-  }
 }
 
 export default nextConfig
